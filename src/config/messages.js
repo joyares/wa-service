@@ -3,15 +3,23 @@
  */
 require('dotenv').config();
 
-const BUSINESS = {
-  name: process.env.BUSINESS_NAME || 'Friends Online',
-  support: process.env.SUPPORT_NUMBER || '01XXXXXXXXX',
-  website: process.env.WEBSITE_URL || 'https://friendsonline.com.bd',
-  address: process.env.OFFICE_ADDRESS || 'Kallyanpur, Mirpur, Dhaka',
-  hours: process.env.OFFICE_HOURS || 'সকাল ১০টা - রাত ১০টা',
-  bkash: process.env.BKASH_NUMBER || '01XXXXXXXXX',
-  nagad: process.env.NAGAD_NUMBER || '01XXXXXXXXX',
-};
+const BUSINESS = {};
+
+// Re-reads the contact/payment fields from process.env; called at load and after /config updates.
+function refreshBusiness() {
+  const support1 = process.env.SUPPORT_NUMBER_1 || process.env.SUPPORT_NUMBER || '01XXXXXXXXX';
+  const support2 = process.env.SUPPORT_NUMBER_2 || '';
+  Object.assign(BUSINESS, {
+    name: process.env.BUSINESS_NAME || 'Friends Online',
+    support: support2 ? `${support1} / ${support2}` : support1,
+    website: process.env.WEBSITE_URL || 'https://friendsonline.com.bd',
+    address: process.env.OFFICE_ADDRESS || 'Kallyanpur, Mirpur, Dhaka',
+    hours: process.env.OFFICE_HOURS || 'সকাল ১০টা - রাত ১০টা',
+    bkash: process.env.BKASH_NUMBER || '01XXXXXXXXX',
+    nagad: process.env.NAGAD_NUMBER || '01XXXXXXXXX',
+  });
+}
+refreshBusiness();
 
 const templates = {
   paymentConfirmation: (data) => `✅ *পেমেন্ট নিশ্চিত হয়েছে!*
@@ -151,4 +159,4 @@ ${data.message}
   }
 };
 
-module.exports = { templates, BUSINESS };
+module.exports = { templates, BUSINESS, refreshBusiness };

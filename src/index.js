@@ -37,6 +37,8 @@ app.get('/', (req, res) => {
       'POST /send-notice',
       'POST /send-maintenance',
       'POST /send-custom',
+      'GET  /config',
+      'POST /config',
     ]
   });
 });
